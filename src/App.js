@@ -12,6 +12,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <TodoInput />
+            <TodoInput />
             <TodoList />
           </div>
         </div>
