@@ -19,17 +19,33 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.setState((prevState) => {
-      return {
+    if (this.state.editItem) {
+      const selectedItemInd = this.state.items.findIndex(
+        (item) => item.id === this.state.id
+      );
+      const updatedItem = { id: this.state.id, title: this.state.item };
+      let updatedArr = [...this.state.items];
+      updatedArr.splice(selectedItemInd, 1, updatedItem);
+
+      this.setState({
         item: "",
         editItem: false,
         id: uuidv4(),
-        items: [
-          ...prevState.items,
-          { id: this.state.id, title: this.state.item }
-        ]
-      };
-    });
+        items: updatedArr
+      });
+    } else {
+      this.setState((prevState) => {
+        return {
+          item: "",
+          editItem: false,
+          id: uuidv4(),
+          items: [
+            ...prevState.items,
+            { id: this.state.id, title: this.state.item }
+          ]
+        };
+      });
+    }
   };
 
   clearList = () => {
@@ -37,11 +53,10 @@ class App extends Component {
   };
 
   handleEdit = (id) => {
-    const filteredArr = this.state.items.filter((el) => el.id !== id);
     const selectedItem = this.state.items.find((item) => item.id === id);
 
+    console.log(this.state.items);
     this.setState({
-      items: filteredArr,
       item: selectedItem.title,
       id: id,
       editItem: true
